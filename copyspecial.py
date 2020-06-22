@@ -34,8 +34,13 @@ def get_special_paths(dirname):
 
 
 def copy_to(path_list, dest_dir):
-    # your code here
-    return
+    """copy source file to destination dir"""
+    if not os.path.exists(dest_dir):
+        os.mkdir(dest_dir)
+    for single_path in path_list:
+        base_filename = os.path.basename(single_path)
+        full_dest = os.path.join(dest_dir, base_filename)
+        shutil.copy(single_path, full_dest)
 
 
 def zip_to(path_list, dest_zip):
@@ -72,7 +77,9 @@ def main(args):
 
     special_paths = get_special_paths(ns.from_dir)
 
-    if ns.tozip:
+    if ns.todir:
+        copy_to(special_paths, ns.todir)
+    elif ns.tozip:
         zip_to(special_paths, ns.tozip)
     else:
         print("\n".join(special_paths))
